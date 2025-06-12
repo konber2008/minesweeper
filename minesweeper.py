@@ -27,14 +27,14 @@ class game:
         self.canvas = tk.Canvas(self.root, bg="#404040")
         self.canvas.pack(fill="both", expand=1)
 
-        mb_game = tk.Menubutton(self.canvas, text="Παιχνίδι", font="Arial 12")
+        mb_game = tk.Menubutton(self.canvas, text="Game", font="Arial 12")
         mb_game.pack(anchor="nw")
 
         menu_game = tk.Menu(mb_game, font="Arial 10")
-        menu_game.add_command(label="Έναρξη νέου", command=self.start_new_game)
-        menu_game.add_command(label="Σκορ", command=self.print_score)
+        menu_game.add_command(label="Start new", command=self.start_new_game)
+        menu_game.add_command(label="Score", command=self.print_score)
         menu_game.add_separator()
-        menu_game.add_command(label="Έξοδος/Είσδος πλήρους οθόνη", command=self.change_fullscreen)
+        menu_game.add_command(label="Go to/Remove full screen", command=self.change_fullscreen)
         menu_game.add_command(label="Έξοδος", command=self.root.destroy)
         mb_game.config(menu=menu_game)
         
@@ -74,9 +74,9 @@ class game:
         self.infull_screen = not self.infull_screen
     def print_score(self):
         winning_games = allGames.winning_games; losing_games = allGames.losing_games
-        messagebox.showinfo("Σκορ", "Κερδισμένα παιχνίδια: "+str(winning_games)+"\nΧαμένα παιχνίδια: "+str(losing_games))
+        messagebox.showinfo("Score", "Wins: "+str(winning_games)+"\nLosts: "+str(losing_games))
     def start_new_game(self):
-        ans = messagebox.askquestion("Νέο παιχνίδι", "Είστε σίγουρος ότι θέλετε να ακυρώσετε το τρέχον παιχνίδι;",parent=self.root)
+        ans = messagebox.askquestion("New Game", "Are you sure that you want to stop the current game?",parent=self.root)
         if ans=='no':
             return
         self.root.destroy()
@@ -88,7 +88,7 @@ class game:
                 if self.grid[i][j].button["state"] != "disabled":
                     self.grid[i][j].button["state"] = "disabled"
                     self.grid[i][j].button["bg"] = "white"
-        ans = messagebox.askquestion("Νίκη παιχνιδιού", "Συχγαρητήρια! Κερδίσατε\nΘέλετε να ξαναπαίξετε;", parent=self.root)
+        ans = messagebox.askquestion("Win", "Congrats! You won\nDo you want to play again;", parent=self.root)
         allGames.winning_games += 1
         self.grid = []
         if ans=="yes":
@@ -103,7 +103,7 @@ class game:
                     self.grid[i][j].button["state"] = "disabled"
                     if self.grid[i][j].state:
                         self.grid[i][j].button["bg"] = "black"
-        ans = messagebox.askquestion("Ήττα", "Χάσατε!\nΘέλετε να ξαναπαίξετε;", parent=self.root)
+        ans = messagebox.askquestion("Lost", "You lost!\nDo you want to play again?", parent=self.root)
         allGames.losing_games += 1
         self.grid=[]
         if ans=="yes":
@@ -120,7 +120,7 @@ class allGames:
         difficulties=[(10, 10, 30), (20, 30, 25), (20, 40, 25), (20, 50, 25), (30, 70, 16)]
         diff = "a"
         while not diff.isdigit() or int(diff) >= len(difficulties):
-            diff = sd.askstring("Δυσκολία", "Ορίστε τη δυσκολία του παιχνιδιού(0-"+str(len(difficulties)-1)+")")
+            diff = sd.askstring("Difficulty", "Select the difficulty of the game(0-"+str(len(difficulties)-1)+")")
             if diff==None:
                 return
         font = difficulties[int(diff)][2]
